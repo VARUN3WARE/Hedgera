@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "aegis-backend"
+name = "hedgera-backend"
 version = "0.1.0"
-description = "AEGIS Trading System Backend with FinRL Integration"
+description = "Hedgera Trading System Backend"
 requires-python = ">=3.11"
 dependencies = [
     # FastAPI and Web Framework
