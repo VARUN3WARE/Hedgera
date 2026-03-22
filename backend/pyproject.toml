@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aegis-backend"
+version = "0.1.0"
+description = "AEGIS Trading System Backend with FinRL Integration"
+requires-python = ">=3.11"
+dependencies = [
+    # FastAPI and Web Framework
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    # Data Processing
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+
+]
+[tool.hatch.build.targets.wheel]
+packages = ["src", "config"]
