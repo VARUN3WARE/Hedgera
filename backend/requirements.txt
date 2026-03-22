@@ -5,6 +5,13 @@ pydantic-settings>=2.1.0
 pydantic[email]
 python-dotenv
 
+# Redis
+redis>=5.0.0
+
+# HTTP Clients
+aiohttp>=3.9.0
+httpx>=0.25.0
+
 # Data Processing
 numpy>=1.24.0
 pandas>=2.0.0
