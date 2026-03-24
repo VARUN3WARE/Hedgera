@@ -3,25 +3,65 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "hedgera-backend"
+name = "aegis-backend"
 version = "0.1.0"
-description = "Hedgera Trading System Backend"
+description = "AEGIS Trading System Backend with FinRL Integration"
 requires-python = ">=3.11"
 dependencies = [
-    # Redis and Async
-    "redis>=5.0.0",
-    # HTTP Client
-    "aiohttp>=3.9.0",
-    "httpx>=0.25.0",
     # FastAPI and Web Framework
     "fastapi>=0.104.0",
     "uvicorn[standard]>=0.24.0",
     "pydantic>=2.5.0",
     "pydantic-settings>=2.1.0",
+    # Redis and Async
+    "redis>=5.0.0",
+    # HTTP Client
+    "aiohttp>=3.9.0",
+    "httpx>=0.25.0",
+    # MCP Server
+    "mcp>=0.1.0",
+    # LLM and AI
+    "openai>=1.0.0",
+    "langchain-openai>=0.1.0",
     # Data Processing
     "numpy>=1.24.0",
     "pandas>=2.0.0",
-
+    "ta-lib>=0.4.0",
+    "yfinance>=0.2.0",
+    # FinRL dependencies
+    "stable-baselines3>=2.0.0",
+    "gymnasium>=0.29.0",
+    "torch>=2.0.0",
+    "alpaca-py>=0.8.0",
+    "alpaca-trade-api>=3.0.0",
+    "pandas-market-calendars>=5.0.0",
+    "stockstats>=0.6.0",
+    # Database (optional)
+    "sqlalchemy>=2.0.0",
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "gym>=0.26.2",
+    "pathway>=0.27.0",
 ]
+
 [tool.hatch.build.targets.wheel]
-packages = ["src", "config"]
+packages = ["src", "config", "finrl_integration"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "ipython>=8.0.0",
+]
+
+finrl = ["stable-baselines3>=2.0.0", "gym>=0.26.0", "torch>=2.0.0"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
