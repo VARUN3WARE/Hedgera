@@ -2,8 +2,14 @@ fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 pydantic>=2.5.0
 pydantic-settings>=2.1.0
+beanie
+motor
 pydantic[email]
 python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+bcrypt==4.0.1
 
 # Redis
 redis>=5.0.0
@@ -15,3 +21,26 @@ httpx>=0.25.0
 # Data Processing
 numpy>=1.24.0
 pandas>=2.0.0
+
+# FinRL Dependencies
+stable-baselines3>=2.0.0
+gymnasium>=0.29.0
+torch>=2.0.0
+alpaca-py>=0.8.0
+
+# Utilities
+python-dotenv>=1.0.0
+sqlalchemy>=2.0.0
+
+# MongoDB and LangChain
+pymongo>=4.0.0
+langchain-openai>=1.0.0
+langchain-core>=1.0.0
+langchain-community>=0.4.0
+
+# Pathway for batch aggregation
+pathway>=0.7.0
+
+#explainability libraries
+shap
+lime
