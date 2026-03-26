@@ -1,0 +1,207 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Updated to futuristic fintech color palette with deep neon-blue ambience */
+:root,
+[data-theme="dark"] {
+  --background: #000000;
+  --background-secondary: #0A0118;
+  --foreground: #FFFFFF;
+  --card: rgba(10, 124, 255, 0.04);
+  --card-foreground: #FFFFFF;
+  --popover: rgba(10, 124, 255, 0.08);
+  --popover-foreground: #FFFFFF;
+  --primary: #0A7CFF;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(255, 255, 255, 0.1);
+  --secondary-foreground: #FFFFFF;
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: rgba(255, 255, 255, 0.6);
+  --accent: #0A7CFF;
+  --accent-foreground: #FFFFFF;
+  --destructive: #FF3B3B;
+  --destructive-foreground: #FFFFFF;
+  --border: linear-gradient(180deg, #0A7CFF 0%, #0A7CFF 100%);
+  --border-subtle: rgba(10, 124, 255, 0.15);
+  --input: rgba(10, 124, 255, 0.06);
+  --ring: #0A7CFF;
+  --glow-blue: rgba(10, 124, 255, 0.3);
+  --glow-cyan: rgba(31, 135, 255, 0.2);
+  --highlight-white: rgba(255, 255, 255, 0.1);
+}
+
+/* Light theme fallback */
+[data-theme="light"] {
+  --background: #F8FAFC;
+  --background-secondary: #F1F5F9;
+  --foreground: #0A0118;
+  --card: rgba(255, 255, 255, 0.8);
+  --card-foreground: #0A0118;
+  --popover: rgba(255, 255, 255, 0.9);
+  --popover-foreground: #0A0118;
+  --primary: #0A7CFF;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(0, 0, 0, 0.05);
+  --secondary-foreground: #0A0118;
+  --muted: rgba(0, 0, 0, 0.05);
+  --muted-foreground: rgba(0, 0, 0, 0.6);
+  --accent: #0A7CFF;
+  --accent-foreground: #FFFFFF;
+  --destructive: #FF3B3B;
+  --destructive-foreground: #FFFFFF;
+  --border-subtle: rgba(10, 124, 255, 0.15);
+  --input: rgba(10, 124, 255, 0.05);
+  --ring: #0A7CFF;
+}
+
+:root {
+  --radius: 1rem;
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border-subtle);
+}
+
+@theme inline {
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border-subtle);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    @apply transition-all duration-200 ease-out;
+  }
+}
+
+@layer components {
+  /* Removed all custom CSS classes that were causing conflicts. Using inline styles in components instead. */
+
+  /* Core component styles */
+  .table {
+    @apply w-full border-collapse;
+  }
+
+  .table tbody tr {
+    @apply border-b border-primary/15 hover:bg-secondary/50 transition-colors duration-200;
+  }
+
+  .table th {
+    @apply text-muted-foreground font-semibold text-sm uppercase tracking-wider;
+  }
+
+  .table td {
+    @apply py-3 px-4;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold transition-colors;
+  }
+
+  .badge-success {
+    @apply bg-green-400/15 text-green-400;
+  }
+
+  .badge-danger {
+    @apply bg-destructive/15 text-destructive;
+  }
+
+  .badge-neutral {
+    @apply bg-muted/15 text-muted-foreground;
+  }
+
+  /* Text color utilities */
+  .up {
+    @apply text-green-400 font-medium;
+  }
+
+  .down {
+    @apply text-destructive font-medium;
+  }
+
+  .neutral {
+    @apply text-muted-foreground;
+  }
+
+  /* Input styles */
+  .input {
+    background: rgba(10, 124, 255, 0.06);
+    @apply text-foreground border border-primary/20 rounded-lg px-4 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 placeholder:text-muted-foreground;
+  }
+
+  /* Scrollbar styles */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 hover:bg-primary/50 rounded-full;
+  }
+
+  /* Card component for pages that use it */
+  .card {
+    @apply bg-card text-card-foreground rounded-2xl border border-primary/20 transition-all duration-300;
+    background: rgba(10, 124, 255, 0.05);
+    backdrop-filter: blur(20px);
+    box-shadow: 
+      0 0 30px rgba(10, 124, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .card:hover {
+    @apply border-primary/40 shadow-2xl;
+    box-shadow: 
+      0 0 50px rgba(10, 124, 255, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+}
