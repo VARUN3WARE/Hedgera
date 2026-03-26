@@ -1,0 +1,38 @@
+{
+  "uptrend_tickers": [
+    "AXP",
+    "AMGN",
+    "AAPL",
+    "BA",
+    "CAT",
+    "CSCO",
+    "CVX",
+    "GS",
+    "HD",
+    "HON"
+  ],
+  "downtrend_tickers": [
+    "IBM",
+    "INTC",
+    "JNJ",
+    "KO",
+    "JPM",
+    "MCD",
+    "MMM",
+    "MRK",
+    "MSFT",
+    "NKE"
+  ],
+  "neutral_tickers": [
+    "PG",
+    "TRV",
+    "UNH",
+    "V",
+    "VZ",
+    "WBA",
+    "WMT",
+    "DIS",
+    "DOW",
+    "CRM"
+  ]
+}

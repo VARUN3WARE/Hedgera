@@ -1,0 +1,179 @@
+version: "3.8"
+
+services:
+  # ═══════════════════════════════════════════════════════════════
+  # Redis - Message broker for streaming data
+  # ═══════════════════════════════════════════════════════════════
+  redis:
+    image: redis:7-alpine
+    container_name: aegis-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --maxmemory 2gb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aegis-network
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════════
+  # MongoDB - Historical data storage
+  # edit the .env file to change username, password, and database name
+  # ═══════════════════════════════════════════════════════════════
+  mongodb:
+    image: mongo:7
+    container_name: aegis-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: aegis_user
+      MONGO_INITDB_ROOT_PASSWORD: aegis_password
+      MONGO_INITDB_DATABASE: aegis_trading
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aegis-network
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════════
+  # AEGIS Pipeline - Main trading application
+  # ═══════════════════════════════════════════════════════════════
+  aegis-pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: aegis-pipeline
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    environment:
+      # Redis Configuration
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+
+      # MongoDB Configuration
+      - MONGODB_URI=mongodb://aegis_user:aegis_password@mongodb:27017/aegis_trading?authSource=admin
+
+      # API Keys (set these in .env file)
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_SECRET_KEY=${ALPACA_SECRET_KEY}
+      - ALPACA_BASE_URL=${ALPACA_BASE_URL:-https://data.alpaca.markets}
+      - ALPACA_PAPER_BASE_URL=${ALPACA_PAPER_BASE_URL:-https://paper-api.alpaca.markets}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - NEWS_API_KEY=${NEWS_API_KEY}
+      - TWITTER_KEY=${TWITTER_KEY}
+      - RAPIDAPI_KEY=${RAPIDAPI_KEY}
+
+      # Trading Configuration
+      - SYMBOLS=${SYMBOLS:-AAPL,AMGN,AMZN,MSFT,NVDA}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./agent_logs:/app/agent_logs
+      - ./backend/logs:/app/backend/logs
+      - ./reports:/app/reports
+      - ./.env:/app/.env:ro
+    networks:
+      - aegis-network
+    restart: unless-stopped
+    command: python parallel_full_pipeline_clean.py --continuous
+
+  # ═══════════════════════════════════════════════════════════════
+  # API Server - REST API for monitoring and control
+  # ═══════════════════════════════════════════════════════════════
+  aegis-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: aegis-api
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGODB_URI=mongodb://aegis_user:aegis_password@mongodb:27017/aegis_trading?authSource=admin
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_SECRET_KEY=${ALPACA_SECRET_KEY}
+    volumes:
+      - ./backend/logs:/app/backend/logs
+      - ./.env:/app/.env:ro
+    networks:
+      - aegis-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    command: python main.py
+
+  # ═══════════════════════════════════════════════════════════════
+  # Frontend - Next.js 14 Dashboard
+  # ═══════════════════════════════════════════════════════════════
+  aegis-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: runner
+    container_name: aegis-frontend
+    depends_on:
+      aegis-api:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://aegis-api:8000
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-your-secret-key-change-in-production}
+    networks:
+      - aegis-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+# ═══════════════════════════════════════════════════════════════
+# Networks and Volumes
+# ═══════════════════════════════════════════════════════════════
+networks:
+  aegis-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
+  mongo-data:
+    driver: local
