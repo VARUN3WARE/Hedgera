@@ -1,0 +1,15 @@
+{
+  "dashboard": {
+    "title": "System Monitoring",
+    "panels": [
+      {
+        "title": "CPU Usage",
+        "type": "graph"
+      },
+      {
+        "title": "Memory Usage",
+        "type": "graph"
+      }
+    ]
+  }
+}
