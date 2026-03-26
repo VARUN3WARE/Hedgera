@@ -1,0 +1,15 @@
+{
+  "dashboard": {
+    "title": "Trading Metrics",
+    "panels": [
+      {
+        "title": "Active Trades",
+        "type": "stat"
+      },
+      {
+        "title": "Portfolio Value",
+        "type": "graph"
+      }
+    ]
+  }
+}

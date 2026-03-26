@@ -1,0 +1,15 @@
+{
+  "dashboard": {
+    "title": "Agents Monitoring",
+    "panels": [
+      {
+        "title": "Active Agents",
+        "type": "stat"
+      },
+      {
+        "title": "Agent Performance",
+        "type": "graph"
+      }
+    ]
+  }
+}
