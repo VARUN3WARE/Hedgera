@@ -34,9 +34,8 @@ WORKDIR /app
 COPY backend/requirements.txt ./backend/
 COPY requirements.txt ./
 
-# Install Python dependencies
+# Install Python dependencies (root requirements.txt includes backend/requirements.txt)
 RUN pip install --upgrade pip && \
-    pip install -r backend/requirements.txt && \
     pip install -r requirements.txt && \
     pip install pathway>=0.7.0 python-dotenv redis pymongo alpaca-py
 

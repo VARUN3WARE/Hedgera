@@ -19,6 +19,10 @@ AEGIS is an automated trading system that combines reinforcement learning (FinRL
 11. API Documentation
 12. Troubleshooting
 
+## Developer inventory (refactor Phase 0)
+
+Structured runbook, pipeline versus engine mapping, and deferred API/auth decisions live under [docs/phase0/README.md](docs/phase0/README.md). Root [requirements.txt](requirements.txt) exists for Docker and delegates to [backend/requirements.txt](backend/requirements.txt).
+
 ## System Architecture
 
 ### High-Level Architecture
