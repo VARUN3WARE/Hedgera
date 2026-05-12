@@ -1,0 +1,3 @@
+# Root requirements for Docker and tools that expect a repo-level file.
+# Canonical dependency list remains backend/requirements.txt (single source).
+-r backend/requirements.txt
