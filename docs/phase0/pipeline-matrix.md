@@ -16,7 +16,8 @@ Machine-readable mirror (frozen dataclasses, no runtime imports from pipelines):
 
 | Script | Orchestration / driver | Streaming | Notes |
 |--------|------------------------|-----------|--------|
-| `parallel_full_pipeline_clean.py` | `AegisPipelineEnhanced` + local parallel orchestration | Redis `StreamingEngine` | **Docker default** for `aegis-pipeline`; uses `PathwayAggregator` |
+| `parallel_full_pipeline_clean.py` | `AegisPipelineEnhanced` + local parallel orchestration | Redis `StreamingEngine` | **Thin shim** → `backend.src.orchestration.parallel_clean`; **Docker / preferred CLI:** `python -m backend.src.cli` |
+| `python -m backend.src.cli` | Same as shim | Redis `StreamingEngine` | Same flags (`--continuous`, `--single`, `--quick`); compose `aegis-pipeline` default |
 | `parallel_full_pipeline.py` | `ParallelFullAegisPipeline` → `AegisPipelineEnhanced` | Redis `StreamingEngine` | Older parallel variant |
 | `full_pipeline_enhanced.py` | `FullAegisPipelineEnhanced` → `AegisPipelineEnhanced` | Redis `StreamingEngine` | Full logging variant |
 | `full_pipeline.py` | `FullAegisPipeline` → `AegisPipeline` + `MasterStateConsumer` | Pathway `PathwayStreamingEngine` | Wraps classic pipeline |

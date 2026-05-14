@@ -68,4 +68,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import redis; r = redis.Redis(host='localhost', port=6379); r.ping()" || exit 1
 
 # Default command
-CMD ["python", "parallel_full_pipeline_clean.py", "--single", "--quick"]
+CMD ["python", "-m", "backend.src.cli", "--single", "--quick"]

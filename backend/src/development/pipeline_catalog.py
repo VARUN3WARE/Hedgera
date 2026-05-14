@@ -36,7 +36,7 @@ PIPELINE_SCRIPTS: tuple[PipelineScriptInfo, ...] = (
         orchestration="AegisPipelineEnhanced + script-local parallel flow",
         streaming=StreamingKind.REDIS_MANUAL,
         docker_default=True,
-        description="Default for docker-compose aegis-pipeline; uses PathwayAggregator",
+        description="Shim to backend.src.orchestration.parallel_clean; prefer: python -m backend.src.cli",
     ),
     PipelineScriptInfo(
         path="parallel_full_pipeline.py",

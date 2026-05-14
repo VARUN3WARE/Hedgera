@@ -20,15 +20,16 @@ python main.py
 
 ## Trading pipeline
 
-**Canonical for production-style compose:** `parallel_full_pipeline_clean.py`
+**Preferred:** module CLI (from repo root, same flags as the legacy script):
 
 ```bash
-python parallel_full_pipeline_clean.py --continuous
-# or quick single run (also Docker image default CMD)
-python parallel_full_pipeline_clean.py --single --quick
+python -m backend.src.cli --continuous
+python -m backend.src.cli --single --quick
 ```
 
-- Other root scripts exist for experiments and legacy flows; see [pipeline-matrix.md](pipeline-matrix.md).
+**Shim (backward compatible):** `parallel_full_pipeline_clean.py` delegates to the same implementation.
+
+**Canonical for production-style compose:** `python -m backend.src.cli --continuous` (see `docker-compose.yml` `aegis-pipeline`).
 
 ## Docker stack
 

@@ -89,7 +89,7 @@ services:
     networks:
       - aegis-network
     restart: unless-stopped
-    command: python parallel_full_pipeline_clean.py --continuous
+    command: python -m backend.src.cli --continuous
 
   # ═══════════════════════════════════════════════════════════════
   # API Server - REST API for monitoring and control
