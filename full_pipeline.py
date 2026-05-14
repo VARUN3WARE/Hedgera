@@ -12,6 +12,8 @@ This pipeline:
 - Runs 4 agents on FinRL-selected tickers
 - Reconciles FinRL vs Validator decisions
 - Executes trades for approved stocks
+
+For the actively maintained parallel pipeline, see ``python -m backend.src.cli`` and docs/phase0/runbook.md.
 """
 
 import asyncio
