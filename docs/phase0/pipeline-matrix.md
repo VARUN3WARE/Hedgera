@@ -6,11 +6,13 @@ Machine-readable mirror (frozen dataclasses, no runtime imports from pipelines):
 
 ## Streaming engines (orchestration layer)
 
+Selection is centralized in `backend.src.streaming.create_streaming_engine` (`STREAMING_ENGINE` env, default `redis`).
+
 | Class / module | Engine | Role |
 |----------------|--------|------|
-| `backend.src.orchestration.pipeline_main.AegisPipeline` | `PathwayStreamingEngine` | Pathway-based stream processing |
-| `backend.src.orchestration.pipeline_runner` | `PathwayStreamingEngine` | Alternate runner around same engine |
-| `backend.src.orchestration.pipeline_enhanced.AegisPipelineEnhanced` | `StreamingEngine` (Redis manual) | Enhanced pipeline with FinRL fine-tuning path |
+| `backend.src.orchestration.pipeline_main.AegisPipeline` | Pathway (explicit) | Pathway-based stream processing |
+| `backend.src.orchestration.pipeline_runner` | Pathway (explicit) | Alternate runner around same engine |
+| `backend.src.orchestration.pipeline_enhanced.AegisPipelineEnhanced` | From `STREAMING_ENGINE` (default redis) | Enhanced pipeline with FinRL fine-tuning path |
 
 ## Root entrypoint scripts
 

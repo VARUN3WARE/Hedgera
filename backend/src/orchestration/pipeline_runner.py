@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from backend.src.producers.price_producer_impl import PriceProducer
 from backend.src.producers.news_producer_impl import NewsProducer
 from backend.src.producers.social_producer_impl import SocialProducer
-from backend.src.pathway_engine.streaming_engine_pathway import PathwayStreamingEngine
+from backend.src.streaming import StreamingEngineKind, create_streaming_engine
 from backend.src.services.finrl_service_impl import FinRLService
 from backend.config.settings import settings
 
@@ -47,15 +47,9 @@ class PipelineOrchestrator:
         
         self.producers = [price_producer, news_producer, social_producer]
         
-        # Initialize Pathway streaming engine
-        logger.info("\n⚙️  Initializing Pathway Streaming Engine...")
-        self.engine = PathwayStreamingEngine(
-            redis_host=settings.redis_host,
-            redis_port=settings.redis_port,
-            redis_password=getattr(settings, 'redis_password', '')
-        )
-        logger.info("   ✅ Pathway streaming engine initialized")
-        logger.info("   ℹ️  Using automatic temporal processing for indicators")
+        logger.info("\n⚙️  Initializing Streaming Engine...")
+        self.engine = create_streaming_engine(StreamingEngineKind.PATHWAY)
+        logger.info("   ✅ Streaming engine initialized (pathway)")
         
         # Initialize FinRL service
         logger.info("\n🤖 Initializing FinRL Service...")

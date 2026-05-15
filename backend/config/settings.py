@@ -75,6 +75,11 @@ class Settings(BaseSettings):
         default=5,
         description="Publish aggregated state interval in seconds"
     )
+
+    streaming_engine: str = Field(
+        default="redis",
+        description="Streaming backend: redis (manual Redis Streams) or pathway",
+    )
     
     # Logging
     log_level: str = Field(default="INFO", description="Logging level")
