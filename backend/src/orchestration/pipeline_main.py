@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from backend.src.producers.price_producer_impl import PriceProducer
 from backend.src.producers.news_producer_impl import NewsProducer
 from backend.src.producers.social_producer_impl import SocialProducer
-from backend.src.pathway_engine.streaming_engine_pathway import PathwayStreamingEngine
+from backend.src.streaming import StreamingEngineKind, create_streaming_engine
 from backend.src.services.finrl_integrated_service import FinRLIntegratedService
 from backend.src.utils.trigger_checker import TriggerChecker
 from backend.config.settings import settings
@@ -91,19 +91,13 @@ class AegisPipeline:
         logger.info(f"   ℹ️  News: Disabled (will activate after FinRL selects 10 tickers)")
         logger.info(f"   ℹ️  Social: Disabled (will activate after FinRL selects 10 tickers)")
         
-        # Initialize Pathway streaming engine
-        logger.info("\n⚙️  Initializing Pathway Streaming Engine...")
-        self.engine = PathwayStreamingEngine(
-            redis_host=settings.redis_host,
-            redis_port=settings.redis_port,
-            redis_password=getattr(settings, 'redis_password', '')
-        )
+        logger.info("\n⚙️  Initializing Streaming Engine...")
+        self.engine = create_streaming_engine(StreamingEngineKind.PATHWAY)
         self.engine.set_logging(
             self.log_paths['raw_data_log'],
             self.log_paths['processed_data_log']
         )
-        logger.info("   ✅ Pathway streaming engine initialized with automatic temporal processing")
-        logger.info("   ℹ️  Using Pathway for: window management, indicators, multi-stream correlation")
+        logger.info("   ✅ Streaming engine initialized (pathway)")
         
         # Initialize FinRL service with producer references
         logger.info("\n🤖 Initializing FinRL Service...")

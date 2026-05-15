@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from backend.src.producers.price_producer_impl import PriceProducer
 from backend.src.producers.news_producer_impl import NewsProducer
 from backend.src.producers.social_producer_impl import SocialProducer
-from backend.src.engine.streaming_engine import StreamingEngine
+from backend.src.streaming import create_streaming_engine
 from backend.src.services.mongodb_sync_service import MongoDBSyncService
 from backend.src.services.finetuning_service import FineTuningService
 from backend.src.services.finrl_service_finetuned import FinRLServiceWithFineTuning
@@ -116,7 +116,7 @@ class AegisPipelineEnhanced:
         
         # Initialize streaming engine
         logger.info("\n⚙️  Initializing Streaming Engine...")
-        self.engine = StreamingEngine()
+        self.engine = create_streaming_engine()
         self.engine.set_logging(
             self.log_paths['raw_data_log'],
             self.log_paths['processed_data_log']

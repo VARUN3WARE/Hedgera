@@ -16,7 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from backend.config.settings import settings
-from backend.src.pathway_engine import PathwayStreamingEngine
+from backend.src.streaming import StreamingEngineKind, create_streaming_engine
 
 
 def print_banner():
@@ -50,11 +50,7 @@ def run_pathway_engine():
     """Run Pathway streaming engine in main thread."""
     print("🚀 Starting Pathway Streaming Engine...")
     
-    engine = PathwayStreamingEngine(
-        redis_host=settings.redis_host,
-        redis_port=settings.redis_port,
-        redis_password=settings.redis_password,
-    )
+    engine = create_streaming_engine(StreamingEngineKind.PATHWAY)
     
     try:
         # This blocks until interrupted

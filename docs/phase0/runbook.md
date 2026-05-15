@@ -6,6 +6,7 @@ All commands assume repository root as current working directory unless noted.
 
 - Copy or maintain a `.env` at the repo root (required by several pipelines).
 - Pipeline scripts load it before importing `backend.*` (see `parallel_full_pipeline_clean.py`).
+- **Streaming engine:** `STREAMING_ENGINE=redis` (default) or `pathway`. Enhanced/CLI pipelines use this setting; `pipeline_main` and `pipeline_runner` still select Pathway explicitly.
 
 ## REST API (AEGIS monitoring and data)
 
