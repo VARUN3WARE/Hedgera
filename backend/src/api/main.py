@@ -15,6 +15,8 @@ except ImportError:
     import redis.asyncio as aioredis
 
 from backend.config.settings import settings
+from backend.src.api.routes.user_auth import router as user_auth_router
+from backend.src.auth.database import close_auth_db, init_auth_db
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -60,11 +62,16 @@ async def lifespan(app: FastAPI):
         logger.info("✅ Connected to Redis")
     except Exception as e:
         logger.error(f"❌ Redis connection failed: {e}")
-    
+
+    try:
+        await init_auth_db()
+    except Exception as e:
+        logger.error("❌ Auth DB initialization failed: %s", e)
+
     yield
-    
-    # Shutdown
+
     logger.info("🛑 Shutting down FastAPI application...")
+    close_auth_db()
     if redis_client:
         await redis_client.close()
 
@@ -85,6 +92,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(user_auth_router, prefix="/api", tags=["Authentication"])
+
 
 @app.get("/")
 async def root():
@@ -93,9 +102,10 @@ async def root():
         "version": "1.0.0",
         "endpoints": {
             "health": "/health",
+            "auth": "/api/login",
             "finrl_decisions": "/api/finrl/latest",
             "market_state": "/api/market/state",
-            "tickers": "/api/tickers"
+            "tickers": "/api/tickers",
         }
     }
 
