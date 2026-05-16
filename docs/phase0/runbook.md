@@ -11,12 +11,20 @@ All commands assume repository root as current working directory unless noted.
 
 ## Tests
 
+Local CI (no GitHub Actions yet):
+
 ```bash
-pytest -m "not slow and not finrl"    # default CI set
-pytest -m finrl                       # FinRL suites under backend/tests/finrl/
+./scripts/ci/run-tests.sh
 ```
 
-Legacy `unit_tests/` paths are documented in [`unit_tests/README.md`](../../unit_tests/README.md).
+Manual equivalents:
+
+```bash
+pytest -m "not slow and not finrl"
+pytest -m finrl
+```
+
+See [`scripts/ci/README.md`](../../scripts/ci/README.md). Legacy `unit_tests/` paths: [`unit_tests/README.md`](../../unit_tests/README.md).
 
 ## REST API (AEGIS monitoring and data)
 
