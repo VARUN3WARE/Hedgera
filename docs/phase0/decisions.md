@@ -1,27 +1,20 @@
-# Deferred decisions (Phase 0 — no implementation)
+# Deferred decisions (historical notes)
 
-These items are recorded for Phase 1+ so Phase 0 stays documentation-only and low risk.
+## HTTP surface (resolved)
 
-## HTTP surface: two FastAPI applications
+User auth (Beanie + JWT) is served by the same FastAPI app as trading/monitoring routes:
 
 | Location | Role |
 |----------|------|
-| `backend/src/api/main.py` | AEGIS API: health, FinRL snapshot, Redis-backed market routes — **used by `main.py` and Docker `aegis-api`** |
-| `backend/app/main.py` | TradeAI-style API: Beanie/Motor, `/api/login`, onboarding-style routes |
+| `backend/src/api/main.py` | Unified API: Redis routes + `/api/login`, signup, onboarding, etc. |
+| `backend/src/auth/` | User models, Beanie init, JWT, Alpaca key verification |
 
-**Gap:** Next.js BFF under `frontend/app/api/auth/` forwards to `${BACKEND_URL}/api/login`, which matches `backend/app`, not `backend/src/api`.
-
-**Options (pick in a later phase):**
-
-1. Merge auth routers into `backend/src/api` (single process, single port).
-2. Run auth as a separate service and set `BACKEND_URL` in the frontend stack to that service.
-
-Phase 0 does not change runtime behavior.
+The legacy `backend/app/` package was removed. Set `BACKEND_URL` for the Next.js BFF (see `docker-compose.yml` `aegis-frontend`).
 
 ## Test layout
 
-`backend/tests/` (pytest) vs repo root `unit_tests/` — consolidation is a later phase with CI updates.
+See `unit_tests/README.md` and `pytest.ini` — FinRL suites live under `backend/tests/finrl/`.
 
-## Pipeline consolidation
+## Pipeline entrypoints
 
-Replacing multiple root scripts with `python -m …` CLI is deferred to Phase 2.
+Prefer `python -m backend.src.cli` from the repo root; `parallel_full_pipeline_clean.py` remains a thin shim.

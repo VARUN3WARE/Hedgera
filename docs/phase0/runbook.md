@@ -7,6 +7,7 @@ All commands assume repository root as current working directory unless noted.
 - Copy or maintain a `.env` at the repo root (required by several pipelines).
 - Pipeline scripts load it before importing `backend.*` (see `parallel_full_pipeline_clean.py`).
 - **Streaming engine:** `STREAMING_ENGINE=redis` (default) or `pathway`. Enhanced/CLI pipelines use this setting; `pipeline_main` and `pipeline_runner` still select Pathway explicitly.
+- **User auth:** `MONGODB_URI` / `MONGODB_URL`, `SECRET_KEY` for JWT. Frontend BFF uses `BACKEND_URL` (e.g. `http://localhost:8000` locally).
 
 ## Tests
 
@@ -27,6 +28,7 @@ python main.py
 
 - Uses `uvicorn` with host/port from `backend.config.settings` (`settings.api_host`, `settings.api_port`).
 - **Docker:** `docker-compose` service `aegis-api` runs `python main.py` (see repository `docker-compose.yml`).
+- **Auth routes:** `/api/login`, `/api/signup`, `/api/me`, `/api/settings`, `/api/onboarding`, `/api/logout`.
 
 ## Trading pipeline
 
