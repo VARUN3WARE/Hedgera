@@ -23,6 +23,20 @@ AEGIS is an automated trading system that combines reinforcement learning (FinRL
 
 Structured runbook, pipeline versus engine mapping, and deferred API/auth decisions live under [docs/phase0/README.md](docs/phase0/README.md). Root [requirements.txt](requirements.txt) exists for Docker and delegates to [backend/requirements.txt](backend/requirements.txt).
 
+### Local Python layout
+
+Run commands from the **repository root** so imports resolve as `backend.*`:
+
+```bash
+pip install -r requirements.txt
+pip install -r backend/requirements-dev.txt   # optional: pytest, ruff
+export PYTHONPATH=.   # usually set automatically by pytest.ini
+python main.py
+python -m backend.src.cli --single --quick
+```
+
+For dependency management with uv, use `backend/pyproject.toml` (`cd backend && uv sync`).
+
 ## System Architecture
 
 ### High-Level Architecture

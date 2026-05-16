@@ -1,0 +1,6 @@
+# Dev/test tools (install after backend/requirements.txt or root requirements.txt)
+-r requirements.txt
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+ruff>=0.1.0
+black>=23.0.0
