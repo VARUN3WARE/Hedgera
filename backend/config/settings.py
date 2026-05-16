@@ -1,6 +1,7 @@
 """Application settings using Pydantic."""
 from typing import Optional
-from pydantic import Field
+
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -79,6 +80,24 @@ class Settings(BaseSettings):
     streaming_engine: str = Field(
         default="redis",
         description="Streaming backend: redis (manual Redis Streams) or pathway",
+    )
+
+    beanie_mongodb_url: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("MONGODB_URI", "MONGODB_URL"),
+    )
+    beanie_database_name: str = Field(
+        default="aegis_trading",
+        validation_alias=AliasChoices("DB_NAME", "BEANIE_DB_NAME"),
+    )
+    jwt_secret_key: str = Field(
+        default="dev-insecure-set-SECRET_KEY",
+        validation_alias=AliasChoices("SECRET_KEY", "JWT_SECRET_KEY"),
+    )
+    jwt_algorithm: str = Field(default="HS256", validation_alias="ALGORITHM")
+    access_token_expire_minutes: int = Field(
+        default=60 * 24 * 7,
+        validation_alias=AliasChoices("ACCESS_TOKEN_EXPIRE_MINUTES"),
     )
     
     # Logging
