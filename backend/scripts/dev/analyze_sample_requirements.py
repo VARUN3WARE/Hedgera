@@ -16,8 +16,7 @@ from pathlib import Path
 from datetime import datetime
 import time
 
-# Add backend to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+from backend.scripts.dev._repo_paths import FIXTURES_CSV, REPO_ROOT
 
 from backend.src.services.finrl_service_finetuned import FinRLServiceWithFineTuning
 
@@ -26,7 +25,7 @@ print("ANALYSIS: SHAP & LIME Sample Requirements")
 print("="*80)
 
 # Load test data
-csv_path = Path(__file__).parent / "trade_data_3days.csv"
+csv_path = FIXTURES_CSV
 test_data = pd.read_csv(csv_path, index_col=0)
 test_data['date'] = pd.to_datetime(test_data['date'])
 
@@ -41,9 +40,8 @@ finrl_service = FinRLServiceWithFineTuning(
     social_producer=None
 )
 
-project_root = Path(__file__).parent.parent
-finrl_service.base_model_path = str(project_root / "backend/finrl_integration/agent_ppo")
-finrl_service.finetuned_model_path = str(project_root / "backend/finrl_integration/agent_ppo_finetuned")
+finrl_service.base_model_path = str(REPO_ROOT / "backend/finrl_integration/agent_ppo")
+finrl_service.finetuned_model_path = str(REPO_ROOT / "backend/finrl_integration/agent_ppo_finetuned")
 
 success = finrl_service.load_model()
 if not success:

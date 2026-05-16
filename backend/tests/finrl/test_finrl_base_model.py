@@ -21,9 +21,9 @@ from datetime import datetime
 from typing import Dict, Any
 
 # Add backend to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from backend.src.services.finrl_service_finetuned import FinRLServiceWithFineTuning
+
+_FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 from backend.config.settings import settings
 
 
@@ -38,7 +38,7 @@ class TestFinRLBaseModel(unittest.TestCase):
         print("="*80)
         
         # Load test data from CSV
-        csv_path = Path(__file__).parent / "trade_data_3days.csv"
+        csv_path = _FIXTURES / "trade_data_3days.csv"
         if not csv_path.exists():
             raise FileNotFoundError(f"Test data not found: {csv_path}")
         

@@ -17,5 +17,23 @@ uv run uvicorn src.api.main:app --reload
 
 - `src/` - Source code
 - `config/` - Configuration files
-- `tests/` - Tests
-- `scripts/` - Operational scripts
+- `tests/` - Tests (`finrl/` for heavy model suites)
+- `scripts/` - Operational scripts (`scripts/dev/` for manual FinRL tools)
+
+## Tests
+
+From the repository root:
+
+```bash
+pip install pytest pytest-asyncio
+pytest -m "not slow and not finrl"
+pytest -m finrl
+```
+
+## Run API
+
+From the repository root:
+
+```bash
+python main.py
+```

@@ -11,27 +11,20 @@ which properly tests:
 
 This file provides a simpler demo of 6 random predictions using the SAME backend methods.
 """
-import sys
-from pathlib import Path
 import pandas as pd
 import numpy as np
 
-# Add backend to path
-project_root = Path(__file__).parent.parent
-sys.path.insert(0, str(project_root))
-
-# Import ACTUAL backend implementation (NOT reimplementing functions!)
+from backend.scripts.dev._repo_paths import FIXTURES_CSV, REPO_ROOT
 from backend.src.services.finrl_service_finetuned import FinRLServiceWithFineTuning
 
-# Load test data
-csv_path = Path(__file__).parent / "trade_data_3days.csv"
+csv_path = FIXTURES_CSV
 test_data = pd.read_csv(csv_path)
 test_data['date'] = pd.to_datetime(test_data['date'])
 
 # Initialize backend service with absolute paths (required for standalone testing)
 finrl_service = FinRLServiceWithFineTuning(news_producer=None, social_producer=None)
-finrl_service.base_model_path = str(project_root / "backend/finrl_integration/agent_ppo")
-finrl_service.finetuned_model_path = str(project_root / "backend/finrl_integration/agent_ppo_finetuned")
+finrl_service.base_model_path = str(REPO_ROOT / "backend/finrl_integration/agent_ppo")
+finrl_service.finetuned_model_path = str(REPO_ROOT / "backend/finrl_integration/agent_ppo_finetuned")
 
 # Load model using BACKEND METHOD
 success = finrl_service.load_model()
