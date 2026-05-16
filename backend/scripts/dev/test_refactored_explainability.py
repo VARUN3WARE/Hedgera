@@ -9,11 +9,9 @@ Tests:
 4. No redundant code
 """
 
-import sys
 import os
 
-# Add backend to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from backend.scripts.dev._repo_paths import REPO_ROOT  # noqa: F401 — ensures PYTHONPATH
 
 import numpy as np
 from datetime import datetime

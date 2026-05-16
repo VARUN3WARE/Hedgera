@@ -17,8 +17,7 @@ import numpy as np
 from pathlib import Path
 from datetime import datetime
 
-# Add backend to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+from backend.scripts.dev._repo_paths import EXPLAINERS_DIR, FIXTURES_CSV, REPO_ROOT
 
 from backend.src.services.finrl_service_finetuned import FinRLServiceWithFineTuning
 from backend.src.services.explainability_service import ExplainabilityService
@@ -28,7 +27,7 @@ print("PRE-TRAINING SHAP & LIME EXPLAINERS")
 print("="*80)
 
 # Configuration
-SAVE_DIR = Path(__file__).parent.parent / "backend/finrl_integration/explainers"
+SAVE_DIR = EXPLAINERS_DIR
 NUM_SAMPLES = 200  # Use 200 samples for robust training
 SHAP_SAMPLES = 50
 LIME_SAMPLES = 100
@@ -40,7 +39,7 @@ print(f"   SHAP samples: {SHAP_SAMPLES}")
 print(f"   LIME samples: {LIME_SAMPLES}")
 
 # Load test data
-csv_path = Path(__file__).parent / "trade_data_3days.csv"
+csv_path = FIXTURES_CSV
 if not csv_path.exists():
     print(f"\n❌ Error: {csv_path} not found")
     sys.exit(1)
@@ -59,9 +58,8 @@ finrl_service = FinRLServiceWithFineTuning(
     social_producer=None
 )
 
-project_root = Path(__file__).parent.parent
-finrl_service.base_model_path = str(project_root / "backend/finrl_integration/agent_ppo")
-finrl_service.finetuned_model_path = str(project_root / "backend/finrl_integration/agent_ppo_finetuned")
+finrl_service.base_model_path = str(REPO_ROOT / "backend/finrl_integration/agent_ppo")
+finrl_service.finetuned_model_path = str(REPO_ROOT / "backend/finrl_integration/agent_ppo_finetuned")
 
 success = finrl_service.load_model()
 if not success:

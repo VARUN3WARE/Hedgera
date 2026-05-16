@@ -8,6 +8,15 @@ All commands assume repository root as current working directory unless noted.
 - Pipeline scripts load it before importing `backend.*` (see `parallel_full_pipeline_clean.py`).
 - **Streaming engine:** `STREAMING_ENGINE=redis` (default) or `pathway`. Enhanced/CLI pipelines use this setting; `pipeline_main` and `pipeline_runner` still select Pathway explicitly.
 
+## Tests
+
+```bash
+pytest -m "not slow and not finrl"    # default CI set
+pytest -m finrl                       # FinRL suites under backend/tests/finrl/
+```
+
+Legacy `unit_tests/` paths are documented in [`unit_tests/README.md`](../../unit_tests/README.md).
+
 ## REST API (AEGIS monitoring and data)
 
 **Canonical app:** `backend.src.api.main:app`

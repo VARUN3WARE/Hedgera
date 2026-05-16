@@ -2,30 +2,30 @@
 """
 Quick test for dual explanation system (local + global)
 """
-import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
+
+from backend.scripts.dev._repo_paths import REPO_ROOT
+from backend.src.services.explainability_service import ExplainabilityService
 
 import numpy as np
 from datetime import datetime
 from stable_baselines3 import PPO
-from src.services.explainability_service import ExplainabilityService
 
 def test_dual_explanations():
     """Test both local and global explanations"""
     print("\n=== Testing Dual Explanation System ===\n")
     
     # Load model
-    model_path = "backend/finrl_integration/agent_ppo.zip"
-    if not os.path.exists(model_path):
+    model_path = REPO_ROOT / "backend/finrl_integration/agent_ppo.zip"
+    if not model_path.exists():
         print(f"❌ Model not found at {model_path}")
         return False
     
     print(f"✅ Loading model from {model_path}")
-    model = PPO.load(model_path)
+    model = PPO.load(str(model_path))
     
     # Auto-load pre-trained explainers
-    explainer_dir = "backend/finrl_integration/explainers"
+    explainer_dir = str(REPO_ROOT / "backend/finrl_integration/explainers")
     
     # DOW 30 tickers
     ticker_list = [
