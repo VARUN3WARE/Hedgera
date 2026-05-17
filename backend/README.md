@@ -1,48 +1,39 @@
-# Aegis Backend
+# Aegis backend
 
-Agentic Trading System Backend
+Python services for the AEGIS trading system: producers, streaming, FinRL, Redis agents, and the unified FastAPI app.
 
-## Setup
+**Full documentation:** [docs/README.md](../docs/README.md) · [Setup](../docs/setup.md) · [API / Redis reference](../docs/api.md)
+
+## Install
+
+From the **repository root**:
 
 ```bash
-# Install dependencies
-pip install uv
+pip install -r requirements.txt
+pip install pytest pytest-asyncio   # optional, for tests
+```
+
+With **uv** (from this directory):
+
+```bash
 uv sync
-
-# Run application
-uv run uvicorn src.api.main:app --reload
 ```
 
-## Structure
+## Run
 
-- `src/` - Source code
-- `config/` - Configuration files
-- `tests/` - Tests (`finrl/` for heavy model suites)
-- `scripts/` - Operational scripts (`scripts/dev/` for manual FinRL tools)
+| Task | Command (from repo root) |
+|------|---------------------------|
+| API | `python main.py` |
+| Pipeline | `python -m backend.src.cli --continuous` |
+| Tests | `./scripts/ci/run-tests.sh` |
 
-## Tests
+## Layout
 
-From the repository root:
-
-```bash
-./scripts/ci/run-tests.sh          # fast local CI (recommended)
-./scripts/ci/run-tests-full.sh     # includes finrl/slow
-```
-
-Or directly:
-
-```bash
-pip install pytest pytest-asyncio
-pytest -m "not slow and not finrl"
-pytest -m finrl
-```
-
-See [`scripts/ci/README.md`](../scripts/ci/README.md).
-
-## Run API
-
-From the repository root:
-
-```bash
-python main.py
-```
+- `src/api/` — FastAPI application
+- `src/auth/` — User models, JWT, Beanie
+- `src/orchestration/` — Pipeline runners
+- `src/streaming/` — Engine factory
+- `src/agents_redis/` — LLM agents and execution
+- `src/services/` — FinRL, MongoDB sync, explainability
+- `tests/` — pytest suites
+- `finrl_integration/` — PPO model assets
