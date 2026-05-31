@@ -53,7 +53,7 @@ COPY . .
 RUN mkdir -p agent_logs backend/logs reports data
 
 # Set permissions
-RUN chmod +x parallel_full_pipeline_clean.py historical_data.py
+RUN chmod +x historical_data.py
 
 # ═══════════════════════════════════════════════════════════════
 # Stage 4: Production (Final)

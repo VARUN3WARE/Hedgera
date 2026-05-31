@@ -318,17 +318,15 @@ async def run_pipeline_script():
     # Reset cache on new run
     sent_files_cache = {}
     
-    script_name = "parallel_full_pipeline_clean.py"
-    if not os.path.exists(script_name):
-        script_name = "full_pipeline_enhanced.py"
-        if not os.path.exists(script_name):
-             await broadcast({"type": "log", "raw": "❌ ERROR: No pipeline script found!"})
-             return
+    script_name = "backend.src.cli"
+    if not os.path.isdir("backend"):
+        await broadcast({"type": "log", "raw": "ERROR: backend package not found"})
+        return
 
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"
-    
-    cmd = [sys.executable, "-u", "-X", "utf8", script_name, "--quick"]
+
+    cmd = [sys.executable, "-u", "-X", "utf8", "-m", script_name, "--quick"]
     
     print(f"🚀 Launching: {' '.join(cmd)}")
     await broadcast({"type": "log", "raw": f"🚀 Launching {script_name}..."})

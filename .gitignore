@@ -66,3 +66,4 @@ logs/
 # Cache
 .cache/
 .pytest_cache/
+.local_development/
